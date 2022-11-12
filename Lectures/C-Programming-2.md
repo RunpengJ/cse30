@@ -49,10 +49,10 @@ on left side of the = sign
 on the right side of an = sign
 - contents or value stored in the variable 
 - requires a memory read to obtain
-- ![LRvalue](images/C2-0.png)
+- ![LRvalue](/images/C2-0.png)
 
 Example 1
-- ![LRvalue1](images/C2-1.png)
+- ![LRvalue1](/images/C2-1.png)
 - x is on left side of the = assignment operator: using x's Lvalue
 - y is on right side of the assignment operator: using y's Rvalue
 - x = y: read memory at y (Rvalue), write it to memory at x's address (Lvalue)
@@ -74,7 +74,7 @@ Pointer: the Rside of contains a memory address
 - content: an unsigned memory address
 - need specify the type of variable to which the pointer points
 
-```
+```c
 int *p = &i; // * is part of the definition
 
 // same as below

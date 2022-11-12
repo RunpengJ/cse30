@@ -4,7 +4,7 @@ pitfalls
 - not setting pointer to null after dereferencing a variable-> segfault
 - where to add new node to linked list in insertticket() ->
 
-![PA6](images/PA6-1.png)
+![PA6](/images/PA6-1.png)
 ```
 struct vehicle {
     char *state;            /* state on license plate */
