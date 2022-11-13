@@ -85,27 +85,106 @@ p = &i;
 
 - Pointer variables all use the ***same amount of memory*** no matter what they point at
 
-## Introduction (or dereference) Operator: *
+### Introduction: indirection (or dereference) Operator: *
 
-\* on Rside - read the contents of the variable to get an address
+```c
+z = *x
+```
+\* on Rside
+ - read the contents of the variable to get an address
+ - read and return the contents at that address
+ - two reads of memory on the Rside
 
-## Compare indirection operator and address operator
+```c
+*z = x
+```
+\* on Lside
+ - read the contents of the variable to get an address
+ - write the evaluation of the Rside expression to that address 
+ - 1 read and 1 write on the Lside
 
-### address operator (&): 
+## The NULL Constant and Pointers
 
-- get the address of this box
+- NULL is a constant that evaluates to zero (0)
+- assign NULL to a pointer vairable - the pointer does not point at anything, and it is called a "NULL pointer"
+- memory location 0 is not a valid memory address in any C program
+deferencing(*) NULL at runtime will cause a program fault (segmentation fault)
+- e.g. 
+![NULL pointer](/images/C2-2.png)
 
-### indirection operator (*)
+## Aliasing
 
-- follow the arrow to the next box and get its contents
+Variables are aliases of each other when they all reference the same memory
+- e.g. create an alias by copying one pointer to another pointer
+- side effect: changing one variable's value changes others' too
 
-## Introduction: indirection operator Lside
+## Arrays
 
-- 
+- allocates (count * sizeof(type)) bytes of contiguous memory
+- array names are constants (cannot appear on the Lside by itself)
+- e.g. 
+![array](/images/C2-3.png)
 
+### Array Initialization
 
+- type name[countt] = {val0, val1,..., valN};
+  - {} (optional) initialization list can only be used at time of definition
+  - an array name isjust the address of the first element in a block of contiguous memory
 
+```c
+// determining element count for a compiler calculated array
+#include <stddef.h>
+  int block[] = {2, 3, 5, 6, 11, 13};    // automatic: compiler calculates array size
 
+int cnt = (int)(sizeof(block) / sizeof(block[0])); 	// in this case cnt = 6
+   
+for (int indx = 0; indx < cnt; indx++)
+	block[indx] = 0;
+```
 
+### Pointer and Arrays 
 
+```c
+int buf[] = {2,3,5,6,11};
+```
 
+- buf and &buf[0] on the Rside are equivalent
+
+### Pointer Arithmetic In Use - C's Performance Focus
+
+- C performance focus does not oerform any array "bounds checking"
+- OS only "faults" for an incorrect access to memory (read-only or not assigned to your process)
+- lack of bound checking is a common source of errors and bugs and is a common criticism of C
+
+## C Strings
+
+Strings in c are not objects
+  - no embedded information about them, you just have a name and a memory location
+  - cannot use + or += to concatenate strings
+  - terminated by a sentinel terminal character '\0'
+
+### String initialization
+
+- when you combine the automatic length definition for arrays with double quote(") initialization
+  - compiler addes the null terminator '\0' for you
+
+```c
+char a[4] = {'c', 'a', 't', '\0'}; 
+char b[] = "cat"; // compiler calculates size, adds '\0'
+char c[] = {'c', 'a', 't', '\0', 'a', 'b'}; // array size 6, string length 3
+char empty[] = ""; // empty, contains '\0', string length 0
+```
+
+equivalent 4-character arrays
+- these are all strings as they include a null('\0') terminator
+
+```c
+char a[4] = {'c', 'a', 't', '\0'};
+char b[4] = {'c', 'a', 't', 0};
+char c[4] = {'c', 'a', 't'}; // missing initial value defaults to 0
+char d[4] = {99, 97, 116, 0}; // 99 = 'c', 97 = 'a', 116 = 't'
+char e[4] = "cat";
+char f[4] = "cat\0"; // literal has 5 chars; array f string length is 3
+```
+
+## Different ways to pass parameters
