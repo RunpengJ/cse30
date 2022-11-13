@@ -188,3 +188,54 @@ char f[4] = "cat\0"; // literal has 5 chars; array f string length is 3
 ```
 
 ## Different ways to pass parameters
+
+- call-by-reference (or pass by reference)
+  - parameter in the called function is an alias (references the same memory location) for the suppiled argument
+  - modifying the parameter modifies the calling argument
+- call-by-value (or pass by value) (C)
+  - what called function does
+  - passed parameters are used like local variables
+  modifying the passed parameter in the function is allowed just like a local variable
+  - so, writing the passed paramter in the funtion is allowed just like a local variable
+- the return value from a function in C is by value
+
+### Array as parameters - what is the size of the array?
+
+you can only use sizeof() to calculate element count where the array is defined
+
+Approach 1: pass the size
+
+Approach 2: use a sentinel element
+
+- a sentinel is an element that contains a value that is not part of the normal data range
+  - forms of 0 are often used, e.g. '\0', NULL
+
+strlen: walks the array each time called
+
+2D array of char
+- inefficient, waste memory
+![2dArrayChar](/images/C2-4.png)
+
+pointer array to string (not 2D array)
+- length of row can vary in length
+- ![point array](/images/C2-5.png)
+
+## main() command line arguments: argc, argv
+
+- arguments are passed to main() as a pointer to an array of pointers (**argv or *argv[])
+  
+  conceptually: % *argv[0] *argv[1] *argv[2]
+
+- argc is the number of valid elements
+- *argv (argv[0]) is usually is the name of the executable file
+- *(argv + argc) always contains a NULL sentinel
+- *argv[] (or **argv) elements point at mutable strings!
+
+- argv[0][0] equiv to **(argv+0) equiv to **argv
+- argv[0][8] equiv to *(*argv + 8)
+- ```c
+  char *pt = *argv;
+  *pt equiv to **(argv+0)
+  *(pt+8) equiv to *(*argv+8)
+  ```
+
